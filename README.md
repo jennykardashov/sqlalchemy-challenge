@@ -1,13 +1,13 @@
-###sqlalchemy-challenge
+# sqlalchemy-challenge
 This is an assignment for the University of Minnesota Data Analytics and Visualization Boot Camp.
 
-##Surf's Up
+## Surf's Up
 Premise: Congratulations! You've decided to treat yourself to a long holiday vacation in Honolulu, Hawaii. To help with your trip planning, you decide to do a climate analysis about the area.
 
-##Part One: Analyze and Explore Climate Data
+## Part One: Analyze and Explore Climate Data
 This section of the assignment uses Python and SQLAlchemy to do a basic climate analysis and data exploration. Using the hawaii.sqlite database file with a Jupyter Notebook file, SQLAlchemy can be used to connect to the database via the create_engine() and automap_base() functions, as well as saving data to classes. The proper setup for this task involves creating a SQLAlchemy session in Python and closing the session at the end of the notebook.
 
-##Precipitation Analysis (See climate_starter.ipynb)
+## Precipitation Analysis (See climate_starter.ipynb)
 In this section of the assignment, the following needed to be completed:
 
   1. Find the most recent date in the dataset
@@ -20,7 +20,7 @@ In this section of the assignment, the following needed to be completed:
 
 After completing these steps in Jupyter Notebook, the resulting chart is as follows: ![precipitation Plot](https://github.com/jennykardashov/sqlalchemy-challenge/blob/main/SurfsUp/Outputs/prcp.png)
 
-##Station Analysis (See climate_starter.ipynb)
+## Station Analysis (See climate_starter.ipynb)
 In this section of the assignment, the following needed to be completed:
 
   1. Design a query to calculate the total number of stations in the dataset
@@ -30,5 +30,5 @@ In this section of the assignment, the following needed to be completed:
   
 After completing these steps, the histogram is as follows: ![alt text](https://github.com/jennykardashov/sqlalchemy-challenge/blob/main/SurfsUp/Outputs/hist_active_plot.png)
 
-##Part Two: Climate App (See app.py)
+## Part Two: Climate App (See app.py)
 Part Two of this assingment involves designing a Flask API based on the queries developed in Part One. This Flask API has homepage with all available routes listed, and five additional routes for users to find information.
