@@ -53,58 +53,62 @@ def precipitation():
 
     return jsonify(precipitation_data)
 
-# # Stations Route - Returns JSON response of stations
-# @app.route("/api/v1.0/stations")
-# def stations():
-#     # Create session link from Python to DB
-#     session = Session(engine)
+# Stations Route - Returns JSON response of stations
+@app.route("/api/v1.0/stations")
+def stations():
+    # Create session link from Python to DB
+    session = Session(engine)
 
-#     # Query all stations
-#     total_stations = session.query(Station.station, Station.name).all()
+    # Query all stations
+    total_stations = session.query(Station.station, Station.name).all()
 
-#     # Close session
-#     session.close()
+    # Close session
+    session.close()
 
-#     # Create list and return JSON response
-#     all_stations = list(np.ravel(total_stations))
+    # Create list and return JSON response
+    all_stations = list(np.ravel(total_stations))
 
-#     return jsonify(all_stations)
+    return jsonify(all_stations)
 
-# Tobs Route - Queries dates and temp observations of the most-active station for the previous year, and returns a JSON response
-# @app.route("/api/v1.0/tobs")
-# def tobs():
-#     # Create session link from Python to DB
-#     session = Session(engine)
+#Tobs Route - Queries dates and temp observations of the most-active station for the previous year, and returns a JSON response
+@app.route("/api/v1.0/tobs")
+def tobs():
+    # Create session link from Python to DB
+    session = Session(engine)
 
-#     # Query dates and temp observations of most-active station for previous year
-#     most_active_year_qry = session.query(Measurement.station, Measurement.tobs).filter(Measurement.station == most_id).filter(Measurement.date >= dt.date(2016, 8, 23)).filter(Measurement.date <= dt.date(2017, 8, 23)).order_by(Measurement.tobs).all()19281").filter(Measurement.date>="2016-08-23").all()
+    # Query dates and temp observations of most-active station for previous year
+    station_counts = session.query(Station.station, func.count(Measurement.station)).filter(Measurement.station == Station.station).group_by(Station.station).\
+    order_by(func.count(Station.station).desc()).all()
 
-#     # Close session
-#     session.close()
+    # Close session
+    session.close()
 
-#     # Create list and return JSON response
-#     most_active = list(np.ravel(most_active_year_qry))
+    # Create list and return JSON response
+    most_active = list(np.ravel(station_counts))
 
-#     return jsonify(most_active)
+    return jsonify(most_active)
 
-# # Start and End Routes - Returns JSON resposne of min temp, max temp, and avg temp for a specified start or start-end range
-# @app.route("/api/v1.0/start/<start>")
-# @app.route("/api/v1.0/start_end/<start>/<end>")
-# def start_end(start, end = "2017-08-23"):
-#     # Create session link from Python to DB
-#     session = Session(engine)
+# Start and End Routes - Returns JSON resposne of min temp, max temp, and avg temp for a specified start or start-end range
+@app.route("/api/v1.0/start/<start>")
+@app.route("/api/v1.0/start_end/<start>/<end>")
+def start_end(start, end = "2017-08-23"):
+    # Create session link from Python to DB
+    session = Session(engine)
 
-#     # Query min temp, avg temp, and max temp for specified start or start-end range
-#     results = session.query(func.avg(Measurement.tobs), func.max(Measurement.tobs), func.min(Measurement.tobs)).\
-#         filter(Measurement.date >=start).filter(Measurement.date <= end).all()
+    # Query min temp, avg temp, and max temp for specified start or start-end range
+    station_counts = session.query(Station.station, func.count(Measurement.station)).filter(Measurement.station == Station.station).group_by(Station.station).\
+    order_by(func.count(Station.station).desc()).all()
+    most_id = station_counts[0][0]
+    most_activeStation = session.query(Measurement.station, func.min(Measurement.tobs),func.max(Measurement.tobs),func.avg(Measurement.tobs)).\
+    filter(Measurement.station == most_id).all()
 
-#     # Close session
-#     session.close()
+    # Close session
+    session.close()
 
-#     # Create list and return JSON response
-#     start_result = list(np.ravel(results))
+    # Create list and return JSON response
+    start_result = list(np.ravel(most_activeStation))
 
-#     return jsonify(start_result)
+    return jsonify(start_result)
 
 if __name__ == '__main__':
     app.run()    
